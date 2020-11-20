@@ -1,30 +1,18 @@
-# EgyALPR
+# YoloV3Detector
 
 ## Overview
 
-This project is to detect the license plate of Egypt cars and recognize the plate number. According to the character of 
-the project, this consists of two main parts. 
+This project is to detect the license plate of cars using Yolov3 model and recognize the plate number using OCR. 
 
-One is to detect the license plate of Egypt cars. Using the open ALPR API, 
-the license plates of Egypt cars are not detected. Therefore, the training part to detect the license plate is necessary,
-which can be solved by using the Yolo model. The training dataset with the detected license plate is made manually 
-from the images and video frames.
-
-The second is to recognize the Arabic digits and letters in the license plate. It can not be solved by OCR using the 
-tesseract framework in the condition under which the open OCR APIs like Google Vision API can not be used. So in this step, 
-to recognize the Arabic letters and digits, the training part with the train dataset using the Keras framework is needed.
-Currently, the train dataset is Arabic handwritten digits and letters dataset on Kaggle. 
+The training dataset for Yolov3 model with the detected license plate is made manually from the images and video frames.
+The recognition of number can not be solved by OCR using the tesseract framework. 
 
 ## Configuration
 
 - darknet
     
-    The source code to train the Yolo model with the train dataset.
-    
-    There is no custom_data directory,  file in initial framework.
-    
-    We should make custom_data directory and download weights and conv file.
-    
+    The source code to train the Yolov3 model with the train dataset.
+        
 - training_dataset
     
     Annotated dataset with images and xmls
@@ -38,23 +26,14 @@ Currently, the train dataset is Arabic handwritten digits and letters dataset on
 - Environment
 
     Ubuntu 18.04, Python 3.6, GPU
+    
 - Dependency Installation
 
     ```
         pip3 install -r requirements.txt
     ```
-- Download models
-
-    * For the model to detect the license plate, download from and copy them in /utils/model/models/lp_detection_model 
-    directory.
-    * For the model to recognize the handwritten Arabic digits and letters, download from 
-    https://drive.google.com/file/d/1_cP94KT68NWMxf2En_jhk-KGDz9NlsIu/view?usp=sharing and copy them in 
-    /utils/model/models/arabic_handwritten_model directory.
 
 ## Execution
-
-- Please set the several path(DETECT_FRAME_PATH, HANDWRITTEN_DIGITS_TRAINING_PATH, HANDWRITTEN_DIGITS_TESTING_PATH,
-HANDWRITTEN_LETTERS_TRAINING_PATH, HANDWRITTEN_LETTERSS_TESTING_PATH, etc) in settings file.
 
 - Please run the following command in terminal in this project directory.
 
@@ -62,9 +41,9 @@ HANDWRITTEN_LETTERS_TRAINING_PATH, HANDWRITTEN_LETTERSS_TESTING_PATH, etc) in se
         python3 main.py
     ```
 
-## Appendix
+## Note
 
-If you want to train the Yolo model and the handwritten recognition model, please read the following instructions.
+If you want to train the Yolov3 model and the handwritten recognition model, please read the following instructions.
 
 - Training Yolo model
     
@@ -80,7 +59,7 @@ If you want to train the Yolo model and the handwritten recognition model, pleas
         Then download yolov3.weights from https://pjreddie.com/darknet/yolo/ and 
         darkenet53.conv.74 from https://pjreddie.com/media/files/darknet53.conv.74 and copy them in darknet directory.
     
-    * Train the model to detect license plate of Egypt cars
+    * Train the model to detect license plate
         
         After preparing for training as mentioned above, configure yolov3.cfg file followed by Configurations part in 
         https://blog.francium.tech/custom-object-training-and-detection-with-yolov3-darknet-and-opencv-41542f2ff44e
@@ -105,37 +84,6 @@ If you want to train the Yolo model and the handwritten recognition model, pleas
         
         After finishing train, copy the trained model(.weights) to utils/model/models/lp_detection_model directory.
       
-- Training the model to recognize the handwritten digits and letters
-    
-    * Preparation for training the handwritten Arabic letters and digits
-    
-        Please download the handwritten Arabic digits and letters dataset from Kaggle and copy them /data directory. 
-        Since the image sizes of the handwritten digits(28 * 28) are different from the one of handwritten letters
-        (32 * 32), the adjustment between their sizes is needed.
-        
-        The adjustment between handwritten letters and handwritten digits:
-        
-            Please set HANDWRITTEN_DIGITS_PATH, RESIZE_HANDWRITTEN_DIGITS_PATH variables in settings file and run the 
-            following command in terminal.
-            
-            ```
-                python3 utils/arabic_digit_reshape.py
-            ```
-         
-            Then the reshaped handwritten digits dataset(32 * 32) is saved in data/ahdd1 with csv file format.
-         
-        Training the model to recognize the handwritten digits and letters:
-            
-            Please set HANDWRITTEN_DIGITS_TESTING_IMAGE_PATH, HANDWRITTEN_DIGITS_TESTING_LABEL_PATH, 
-            HANDWRITTEN_DIGITS_TRAINING_IMAGE_PATH, HANDWRITTEN_DIGITS_TRAINING_LABEL_PATH, 
-            HANDWRITTEN_LETTERS_TESTING_IMAGE_PATH, HANDWRITTEN_LETTERS_TESTING_LABEL_PATH, 
-            HANDWRITTEN_LETTERS_TRAINING_IMAGE_PATH, HANDWRITTEN_LETTERS_TRAINING_LABEL_PATH variables in settings file 
-            and run the following command in terminal
-            
-            ```
-                python3 utils/train_handwritten_Arabic_letter_digit.py 
-            ```
-
 ## Main reference site
 
     https://blog.francium.tech/custom-object-training-and-detection-with-yolov3-darknet-and-opencv-41542f2ff44e
